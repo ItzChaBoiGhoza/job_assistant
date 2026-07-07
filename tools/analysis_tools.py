@@ -46,7 +46,22 @@ def score_resumes(keywords:str, resume_path:str) -> str:
         
     messages = [
         SystemMessage(content="You are an expert career coach and resume analyst. Evaluate resumes against job requirements and identify the strongest match concisely."),
-        HumanMessage(content=f"Evaluate these resumes against the job keywords and return: 1. Score for each resume (X/10) 2. Name of the winning resume 3. Brief reason why it won (2-3 senteces max) 4. Short bullet list of suggested changes to the winning resume Job Keywords: {keywords} Resumes: {resume_content} Keep the response concise and actionable.")
+        HumanMessage(content=f"""Evaluate these resumes against the job keywords.
+                     Return the response in exactly this format:
+                     
+                    {{
+                        "scores": {{
+                            "filename.docx": "X/10"
+                        }},
+                        "winning_resume": "filename.docx",
+                        "reason": "brief reason why it won in 2-3 sentences",
+                        "suggestions": ["suggestion 1", "suggestion 2", "suggestion 3"]
+                    }}
+                     
+                     Job Keywords: {keywords} 
+                     
+                     Resumes: {resume_content} 
+                     """)
     ]
     
     model = ChatAnthropic(
