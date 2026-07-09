@@ -15,7 +15,23 @@ def extract_keywords(job_description:str) -> str:
     """
     messages = [
         SystemMessage(content='You are an expert at analyzing job description. Extract all important keywords including required skills, technologies, qualifications, and responsibilities. Present them in a clear organized list.'),
-        HumanMessage(content=f'Extract the keywords from this job description: {job_description}')
+        HumanMessage(content=f"""Extract the keywords from provided job description.
+                    Return the response in exactly this format:
+                    
+                    {{
+                        "company_name": "company's name",
+                        "job_title": "position",
+                        "keywords": {{
+                            "technical_skills": [],
+                            "tools": [],
+                            "qualifications": [],
+                            "responsibilities": [],
+                            "soft_skills": []
+                        }}
+                    }}
+                     
+                    Job Description: {job_description}
+                    """)
     ]
     
     model = ChatAnthropic(
@@ -47,7 +63,7 @@ def score_resumes(keywords:str, resume_path:str) -> str:
     messages = [
         SystemMessage(content="You are an expert career coach and resume analyst. Evaluate resumes against job requirements and identify the strongest match concisely."),
         HumanMessage(content=f"""Evaluate these resumes against the job keywords.
-                     Return the response in exactly this format:
+                    Return the response in exactly this format:
                      
                     {{
                         "scores": {{
