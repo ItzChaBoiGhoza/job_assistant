@@ -118,3 +118,13 @@ OUTPUT_DIR/
 ## Limitations
 - **Resume formatting** - the tailored resume is exported as plain text inside a `.docx` file. You will need to apply your own formatting and layout before submitting.
 - **Manual job description input** - the job description must be copy-pasted into `job_description.txt` manually. Support for direct job posting URLs is planned for a future version.
+
+---
+
+## Future Upgrades (v2)
+- **Agent implementation** using LangGraph with human-in-the-loop support
+- **Batch processing** — run multiple job descriptions in a single session
+- **Company research** — use web search to find company culture, recent news, and role-specific insights to strengthen cover letters and interview prep
+- **Better resume formatting** — structured `.docx` output that preserves the original resume layout
+- **Job URL support** — paste a job posting URL instead of manually copying the description
+- **Match score threshold** — warn the user if the match score is too low before proceeding
