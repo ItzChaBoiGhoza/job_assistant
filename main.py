@@ -3,7 +3,6 @@ from pathlib import Path
 import os
 import re
 import json
-from agent import create_job_agent
 from tools.file_tools import read_file, check_file, file_exporter
 from tools.analysis_tools import extract_keywords, score_resumes
 from tools.writing_tools import resume_tailor_tool, cover_letter_generator, interview_prep_generation
@@ -14,15 +13,11 @@ output_dir = os.getenv('OUTPUT_DIR', "~/job_applications")
 output_path = Path(output_dir).expanduser().resolve()
 
 def main():
-    
-    # create_job_agent(api_key)
-    # print("Agent was created successfully!")
-    
     job_description = read_file.invoke('inputs/job_description.txt')
     extracted_keywords = extract_keywords.invoke(job_description)
-    extracted_keywords = re.sub(r'```json|```', '', keywords).strip()
-    resume_scores = score_resumes.invoke({"keywords": keywords, "resume_path": "inputs/resumes"})
-    resume_scores = re.sub(r'```json|```', '', scores).strip()
+    extracted_keywords = re.sub(r'```json|```', '', extracted_keywords).strip()
+    resume_scores = score_resumes.invoke({"keywords": extracted_keywords, "resume_path": "inputs/resumes"})
+    resume_scores = re.sub(r'```json|```', '', resume_scores).strip()
     
     keywords_data = json.loads(extracted_keywords)
     company_name = keywords_data['company_name']
