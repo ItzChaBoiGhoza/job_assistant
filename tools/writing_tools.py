@@ -4,7 +4,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from tools.file_tools import check_file
 
 @tool("resume_tailor_tool")
-def resume_tailor_tool(winning_resume:str, suggestion:str, keywords:str) -> str:
+def resume_tailor_tool(winning_resume:str, suggestion:str, keywords:str, feedback:str = "") -> str:
     """Tailor the resume from the given suggestions based on the job description.
     
     Args:
@@ -14,6 +14,8 @@ def resume_tailor_tool(winning_resume:str, suggestion:str, keywords:str) -> str:
     Return:
         Returns a string of tailored resume.
     """
+    
+    feedback_section = f"\nPrevious attempt feedback: {feedback}" if feedback else ""
     
     message = [
         SystemMessage(content="You are an expert career coach and resume writer. Your task is to tailor a resume to match a specific job description while keeping the content truthful and professional. Preserve the candidate's real experience but reframe, reorder, and enhance wording to better align with the role."),
@@ -26,13 +28,15 @@ def resume_tailor_tool(winning_resume:str, suggestion:str, keywords:str) -> str:
                      - Keep the same resume structure and sections
                      - Return only the complete tailored resume, no commentary
                      - Do not add summary section
-                     - Keep the length of resume to 1 single page
+                     - Keep the resume to a maximum 400 words
                      
                      Job Keywords: {keywords}
                      
                      Suggestions: {suggestion}
                      
                      Original Resume: {winning_resume}
+                     
+                     {feedback_section}
                      """)
     ]
     
@@ -59,40 +63,40 @@ def cover_letter_generator(keywords: str, tailored_resume: str, company_name: st
     """
     cover_letter_template = check_file('inputs/cover_letter_template.docx')
     
-    if cover_letter_template == "":
-        return "Missing cover letter template"
-    else:
-        model = ChatAnthropic(
+    if not cover_letter_template:
+        cover_letter_template = "No cover letter, please generate one."
+    
+    model = ChatAnthropic(
             model='claude-sonnet-4-6',
             temperature=0
         )
-        
-        message = [
-            SystemMessage(content='You are an expert career coach and cover letter analyst and writer. Your tasks is to evaluate the cover letter template, and make changes based on the keywords and tailored resume.'),
-            HumanMessage(content=f"""Tailor the cover letter using the tailored resume and keywods:
-                         
-                         Rules:
-                         - Do not invent experience or skills the candidate does not have
-                         - Use keywords from the job description naturally throughout
-                         - Return only the complete tailored cover letter, no commentary
-                         - Keep the length of cover letter to 1 single page
-                         - Replace the company's name and job title 
-                         
-                         Cover Letter Template: {cover_letter_template}
-                         
-                         Job Keywords: {keywords}
-                         
-                         Tailored Resume: {tailored_resume}
-                         
-                         Company Name: {company_name}
-                         
-                         Job Title: {job_title}
-                         """)
-        ]
-        
-        res = model.invoke(message)
-        
-        return res.content
+    
+    message = [
+        SystemMessage(content='You are an expert career coach and cover letter analyst and writer. Your tasks is to evaluate the cover letter template, and make changes based on the keywords and tailored resume.'),
+        HumanMessage(content=f"""Tailor the cover letter using the tailored resume and keywods:
+                        
+                        Rules:
+                        - Do not invent experience or skills the candidate does not have
+                        - Use keywords from the job description naturally throughout
+                        - Return only the complete tailored cover letter, no commentary
+                        - Keep the cover letter to a maximum of 300 words, 3-4 paragraphs
+                        - Replace the company's name and job title 
+                        
+                        Cover Letter Template: {cover_letter_template}
+                        
+                        Job Keywords: {keywords}
+                        
+                        Tailored Resume: {tailored_resume}
+                        
+                        Company Name: {company_name}
+                        
+                        Job Title: {job_title}
+                        """)
+    ]
+    
+    res = model.invoke(message)
+    
+    return res.content
     
 @tool('interview_prep_tool')
 def interview_prep_generation(keywords:str) -> str:
