@@ -77,12 +77,12 @@ Generates a study guide based on the job description, including key topics to st
 ```
 job_assistant/
 ├── .env.example
-├── .env                        # gitignored — never commit this
+├── .env                        
 ├── .gitignore
 ├── requirements.txt
 ├── README.md
 ├── main.py
-├── agent.py
+├── agent.py                   
 ├── tools/
 │   ├── file_tools.py
 │   ├── analysis_tools.py
@@ -116,8 +116,5 @@ OUTPUT_DIR/
 ---
 
 ## Limitations
-- The tailored resume doesn't have a layout, user would have to manually configure the layout of their resume.
-- Manually copy/paste job description in order to get the AI to start, it would be nice to just hand multiple links of different job descriptions and let the AI model handles it.
-
 - **Resume formatting** - the tailored resume is exported as plain text inside a `.docx` file. You will need to apply your own formatting and layout before submitting.
 - **Manual job description input** - the job description must be copy-pasted into `job_description.txt` manually. Support for direct job posting URLs is planned for a future version.
