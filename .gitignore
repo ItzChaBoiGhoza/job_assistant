@@ -219,3 +219,7 @@ __marimo__/
 
 # User Input Data (Resumes & Job description)
 inputs/
+
+# Google Credentials
+credentials.json
+
