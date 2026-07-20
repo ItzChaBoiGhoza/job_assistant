@@ -3,9 +3,11 @@ from pathlib import Path
 import os
 import re
 import json
+import gspread
 from tools.file_tools import read_file, check_file, file_exporter
 from tools.analysis_tools import extract_keywords, score_resumes
 from tools.writing_tools import resume_tailor_tool, cover_letter_generator, interview_prep_generation
+from tools.tracker import job_tracker
 
 load_dotenv()
 api_key = os.getenv('ANTHROPIC_API_KEY')
@@ -40,7 +42,7 @@ def main():
         
         approval = input('Do you want to export this resume? (yes/no): ')
         
-        if approval.lower() == 'yes':
+        if approval.lower() == 'yes' or approval.lower() == 'y':
             break
         else:
             feedback = input('What would like to change?')
@@ -50,8 +52,11 @@ def main():
     interview_prep = interview_prep_generation.invoke(extracted_keywords)
     
     file_exporter.invoke({"tailored_resume": tailored_resume, "tailored_cover_letter": tailored_cover_letter, "job_description": job_description, "company_name": company_name, "job_title": job_title, "interview_prep": interview_prep})
+
+    job_tracker(company_name, job_title)
     
+    print('Application entered to Google Sheets!')
     print(f"Application materials saved to: {output_path/company_name/job_title}")
-        
+    
 if __name__ == '__main__':
     main()
