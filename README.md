@@ -18,12 +18,18 @@ Uses your cover letter template to produce a tailored cover letter aligned with 
 ### Interview Prep Guide
 Generates a study guide based on the job description, including key topics to study, practice interview questions, and interview tips.
 
+### Application Tracker
+Automatically logs each completed application to a Google Sheet with the data, company name, job title, and status. Tracks your progress across all applications in one place.
+
 ---
 
 ## Requirements
 - Python
 - pip
 - Anthropic API key
+- Google account
+- Google Cloud project with Sheets API enabled
+- Google Service Account credentials
 
 ---
 
@@ -54,7 +60,14 @@ Generates a study guide based on the job description, including key topics to st
     - Place your resume(s) in `inputs/resumes/` as `.docx` files
     - Paste the job description into `inputs/job_description.txt`
     - Optionally place your cover letter template at `inputs/cover_letter_template.docx`
-
+  
+5. **Set up Google Sheets tracking**
+    - Create a Google Cloud project
+    - Enable Google Sheets API
+    - Create a Service Account and download the credentials JSON
+    - Place credentials at `~/.config/gspread/service_account.json` (for MacOS user), `%APPDATA%\gspread\service_account.json` (for Windows user)
+    - Create a new Google Sheet and name it exactly with what you put in `GOOGLE_SHEET_NAME`
+    - Share the sheet with your service account email (found in credentials JSON under `client_email`) with Editor access
 ---
 
 ## Usage
