@@ -51,7 +51,7 @@ def main():
     
     interview_prep = interview_prep_generation.invoke(extracted_keywords)
     
-    file_exporter.invoke({"tailored_resume": tailored_resume, "tailored_cover_letter": tailored_cover_letter, "job_description": job_description, "company_name": company_name, "job_title": job_title, "interview_prep": interview_prep})
+    file_exporter.invoke({"tailored_resume": tailored_resume, "tailored_cover_letter": tailored_cover_letter, "job_description": job_description, "company_name": company_name, "job_title": job_title, "interview_prep": interview_prep, "winning_resume": winning_resume})
 
     job_tracker(company_name, job_title)
     
