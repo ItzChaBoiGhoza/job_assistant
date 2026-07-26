@@ -28,6 +28,7 @@ def resume_tailor_tool(winning_resume:str, suggestion:str, keywords:str, feedbac
                      - Keep the same resume structure and sections
                      - Return only the complete tailored resume, no commentary
                      - Do not add summary section
+                     - Bold words in the bullet points for eye catcher
                      - Keep the resume to a maximum 400 words
                      
                      Job Keywords: {keywords}
