@@ -2,6 +2,7 @@ from langchain.tools import tool
 from pathlib import Path
 from docx import Document
 import os
+import copy
 
 def check_file(file_path:str) -> str:
     path = Path(file_path)
@@ -37,7 +38,7 @@ def read_file(file_path:str) -> str:
     return 
 
 @tool('exporter')
-def file_exporter(tailored_resume:str, tailored_cover_letter:str, job_description:str, company_name: str, job_title:str, interview_prep:str) -> str:
+def file_exporter(tailored_resume:str, tailored_cover_letter:str, job_description:str, company_name: str, job_title:str, interview_prep:str, winning_resume:str) -> str:
     """Tool for exporting all the files into their respective file types, and folder them into a single folder.
     
     Args:
@@ -56,12 +57,20 @@ def file_exporter(tailored_resume:str, tailored_cover_letter:str, job_descriptio
     folder_path = output_dir / company_name / job_title
     folder_path.mkdir(parents=True, exist_ok=True)
     
-    resume_doc = Document()
-    resume_doc.add_paragraph(tailored_resume)
+    resume_doc = Document(f'inputs/resumes/{winning_resume}')
+    for par in resume_doc.paragraphs:
+        par.clear()
+    for line in tailored_resume.split('\n'):
+        if line.strip():
+            resume_doc.add_paragraph(line.strip())
     resume_doc.save(folder_path / 'resume.docx')
     
-    cover_letter_doc = Document()
-    cover_letter_doc.add_paragraph(tailored_cover_letter)
+    cover_letter_doc = Document(f'inputs/cover_letter_template.docx')
+    for cov_par in cover_letter_doc.paragraphs:
+        cov_par.clear()
+    for cov_line in tailored_cover_letter.split('\n'):
+        if cov_line.strip():
+            cover_letter_doc.add_paragraph(cov_line.strip())
     cover_letter_doc.save(folder_path / 'cover_letter.docx')
     
     (folder_path / 'job_description.txt').write_text(job_description)
