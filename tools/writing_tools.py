@@ -30,7 +30,9 @@ def resume_tailor_tool(winning_resume:str, suggestion:str, keywords:str, feedbac
                      - Do not add summary section
                      - Bold words in the bullet points for eye catcher
                      - Suggest a job title tagline for the header
+                     - End paragraphs with period
                      - Keep the resume to a maximum 400 words
+                     - Please have minimum of 4 bullet points
                      
                      Job Keywords: {keywords}
                      
@@ -81,7 +83,7 @@ def cover_letter_generator(keywords: str, tailored_resume: str, company_name: st
                         - Do not invent experience or skills the candidate does not have
                         - Use keywords from the job description naturally throughout
                         - Return only the complete tailored cover letter, no commentary
-                        - Keep the cover letter to a maximum of 300 words, 3-4 paragraphs
+                        - Keep the cover letter to a maximum of 500 words
                         - Replace the company's name and job title 
                         
                         Cover Letter Template: {cover_letter_template}
